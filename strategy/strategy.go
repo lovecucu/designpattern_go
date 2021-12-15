@@ -12,11 +12,15 @@ func (f FlyWithWings) fly() {
 	fmt.Println("fly: with wings")
 }
 
+var _ FlyBehavior = (*FlyWithWings)(nil)
+
 type FlyNoWay struct{}
 
 func (f FlyNoWay) fly() {
 	fmt.Println("fly: no way")
 }
+
+var _ FlyBehavior = (*FlyNoWay)(nil)
 
 type QuackBehavior interface {
 	quack()
@@ -28,17 +32,23 @@ func (q Quack) quack() {
 	fmt.Println("quack: quack")
 }
 
+var _ QuackBehavior = (*Quack)(nil)
+
 type Squeak struct{}
 
 func (q Squeak) quack() {
 	fmt.Println("quack: squeak")
 }
 
+var _ QuackBehavior = (*Squeak)(nil)
+
 type MuteQuack struct{}
 
 func (q MuteQuack) quack() {
 	fmt.Println("quack: mutequack")
 }
+
+var _ QuackBehavior = (*MuteQuack)(nil)
 
 type Duck struct {
 	flyBehavior   FlyBehavior

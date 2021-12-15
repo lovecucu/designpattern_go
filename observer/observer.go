@@ -54,6 +54,8 @@ func (w *WeatherData) SetMeasurements(temp, humidity, pressure float64) {
 	w.MeasurementsChanged()
 }
 
+var _ Subject = (*WeatherData)(nil)
+
 type CurrentConditionDisplay struct {
 	temp, humidity, pressure float64
 	pressureUp               bool
@@ -78,10 +80,23 @@ func (d CurrentConditionDisplay) Display() {
 	fmt.Println("Current conditions:", d.temp, "F degrees and ", d.humidity, "% humidity and pressure upOrNot:", d.pressureUp)
 }
 
+var _ Observer = (*CurrentConditionDisplay)(nil)
+var _ DisplayElement = (*CurrentConditionDisplay)(nil)
+
 type StatisticDisplay struct {
 	count                       int
 	minTemp, maxTemp, totalTemp float64
 	weatherData                 Subject
+}
+
+func NewStatisticDisplay(wd Subject) *StatisticDisplay {
+	cur := &StatisticDisplay{
+		minTemp:     1000,
+		maxTemp:     -1000,
+		weatherData: wd,
+	}
+	wd.RegisterObserver(cur)
+	return cur
 }
 
 func (d *StatisticDisplay) Update(temp, humidity, pressure float64) {
@@ -100,12 +115,5 @@ func (d StatisticDisplay) Display() {
 	fmt.Println("Statistic conditions: minTemp(", d.minTemp, "F degrees) and maxTemp(", d.maxTemp, "F degress) and avgTemp(", d.totalTemp/float64(d.count), ")")
 }
 
-func NewStatisticDisplay(wd Subject) *StatisticDisplay {
-	cur := &StatisticDisplay{
-		minTemp:     1000,
-		maxTemp:     -1000,
-		weatherData: wd,
-	}
-	wd.RegisterObserver(cur)
-	return cur
-}
+var _ Observer = (*StatisticDisplay)(nil)
+var _ DisplayElement = (*StatisticDisplay)(nil)
