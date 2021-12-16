@@ -55,19 +55,19 @@ type Duck struct {
 	quackBehavior QuackBehavior
 }
 
-func (d *Duck) Swim() {
+func (d Duck) Swim() {
 	fmt.Println("swim: swim")
 }
 
-func (d *Duck) Display() {
+func (d Duck) Display() {
 	fmt.Println("display: duck")
 }
 
-func (d *Duck) PerformFly() {
+func (d Duck) PerformFly() {
 	d.flyBehavior.fly()
 }
 
-func (d *Duck) PerformQuack() {
+func (d Duck) PerformQuack() {
 	d.quackBehavior.quack()
 }
 
