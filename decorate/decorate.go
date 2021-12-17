@@ -1,4 +1,4 @@
-package observer
+package decorate
 
 type BeverageInterface interface {
 	GetDesc() string
