@@ -7,6 +7,7 @@ type PizzaInterface interface {
 	bake()
 	cut()
 	box()
+	end()
 	GetName() string
 }
 
@@ -45,6 +46,10 @@ func (p Pizza) box() {
 	fmt.Println("Place pizza in official PizzaStore box")
 }
 
+func (p Pizza) end() {
+	fmt.Println()
+}
+
 func (p Pizza) GetName() string {
 	return p.name
 }
@@ -54,7 +59,7 @@ type CheesePizza struct {
 }
 
 func NewCheesePizza() *CheesePizza {
-	return &CheesePizza{Pizza: Pizza{name: "cheese"}}
+	return &CheesePizza{Pizza: Pizza{name: "normal cheese"}}
 }
 
 type ClamPizza struct {
@@ -62,7 +67,7 @@ type ClamPizza struct {
 }
 
 func NewClamPizza() *ClamPizza {
-	return &ClamPizza{Pizza: Pizza{name: "clam"}}
+	return &ClamPizza{Pizza: Pizza{name: "normal clam"}}
 }
 
 type PizzaCreate interface {
@@ -91,19 +96,20 @@ func (s SimplePizzaFactory) CreatePizza(t PizzaType) PizzaInterface {
 var _ PizzaCreate = (*SimplePizzaFactory)(nil)
 
 type PizzaStore struct {
-	factory PizzaCreate
+	pc PizzaCreate
 }
 
 func NewPizzaStore(factory PizzaCreate) *PizzaStore {
-	return &PizzaStore{factory: factory}
+	return &PizzaStore{pc: factory}
 }
 
 func (ps PizzaStore) OrderPizza(t PizzaType) PizzaInterface {
-	pizza := ps.factory.CreatePizza(t)
+	pizza := ps.pc.CreatePizza(t)
 	pizza.prepare()
 	pizza.bake()
 	pizza.cut()
 	pizza.box()
+	pizza.end()
 	return pizza
 }
 
@@ -149,21 +155,8 @@ func NewChicagoClamPizza() *ChicagoClamPizza {
 	return &ChicagoClamPizza{Pizza: Pizza{name: "Chicago Style Deep Dish Clam Pizza", dough: "Extra Thick Crust Dough", sauce: "Plum Tomato Sauce", toppings: topping}}
 }
 
-type PizzaStoreFunc struct {
-	pc PizzaCreate
-}
-
-func (ps PizzaStoreFunc) OrderPizza(t PizzaType) PizzaInterface {
-	pizza := ps.pc.CreatePizza(t)
-	pizza.prepare()
-	pizza.bake()
-	pizza.cut()
-	pizza.box()
-	return pizza
-}
-
 type NYPizzaStoreFunc struct {
-	PizzaStoreFunc
+	PizzaStore
 }
 
 func (ps NYPizzaStoreFunc) CreatePizza(t PizzaType) PizzaInterface {
@@ -179,12 +172,12 @@ func (ps NYPizzaStoreFunc) CreatePizza(t PizzaType) PizzaInterface {
 
 func NewNYPizzaStoreFunc() PizzaStoreInterface {
 	s := new(NYPizzaStoreFunc)
-	s.PizzaStoreFunc.pc = s
+	s.PizzaStore.pc = s
 	return s
 }
 
 type ChicagoPizzaStoreFunc struct {
-	PizzaStoreFunc
+	PizzaStore
 }
 
 func (ps ChicagoPizzaStoreFunc) CreatePizza(t PizzaType) PizzaInterface {
@@ -200,7 +193,7 @@ func (ps ChicagoPizzaStoreFunc) CreatePizza(t PizzaType) PizzaInterface {
 
 func NewChicagoPizzaStoreFunc() PizzaStoreInterface {
 	s := new(ChicagoPizzaStoreFunc)
-	s.PizzaStoreFunc.pc = s
+	s.PizzaStore.pc = s
 	return s
 }
 
