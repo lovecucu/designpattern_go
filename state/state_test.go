@@ -1,4 +1,4 @@
-package iteratorcomposite
+package state
 
 import (
 	"fmt"

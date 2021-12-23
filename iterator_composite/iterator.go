@@ -74,10 +74,10 @@ type PancakeHouseMenu struct {
 
 func NewPancakeHouseMenu() *PancakeHouseMenu {
 	menuItems := []*MenuItem{
-		&MenuItem{"K&B's Pancake Breakfast", "Pancakes with scrambled eggs, and toast", true, 2.99},
-		&MenuItem{"Regular Pancake Breakfast", "Pancakes with fried eggs, sausage", false, 2.99},
-		&MenuItem{"Blueberry Pancake", "Pancakes made with fresh blueberres", true, 3.49},
-		&MenuItem{"Waffles", "Waffles, with your choice of blueberries or strawberries", true, 3.59},
+		{"K&B's Pancake Breakfast", "Pancakes with scrambled eggs, and toast", true, 2.99},
+		{"Regular Pancake Breakfast", "Pancakes with fried eggs, sausage", false, 2.99},
+		{"Blueberry Pancake", "Pancakes made with fresh blueberres", true, 3.49},
+		{"Waffles", "Waffles, with your choice of blueberries or strawberries", true, 3.59},
 	}
 	return &PancakeHouseMenu{menuItems: menuItems}
 }
