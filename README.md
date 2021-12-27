@@ -1,2 +1,2 @@
 # designpattern_go
-Golang implementation of classic design patterns in HEAD FIRST DESIGN PATTERN
+Go version implementation of design pattern in HEAD FIRST DESIGN PATTERN
